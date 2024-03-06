@@ -1,0 +1,40 @@
+<section class="my-5 position-relative">
+  <div class="row align-items-center">
+    <div class="col-md-3">
+      <div class="item">
+        <owl-carousel-o [options]="customOptions">
+          <ng-container *ngFor="let slide of proDet.images">
+            <ng-template carouselSlide>
+              <img [src]="slide" />
+            </ng-template>
+          </ng-container>
+        </owl-carousel-o>
+        <!-- <img [src]="proDet.imageCover" class="w-100" [alt]="proDet.title" /> -->
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="item">
+        <h3 class="h5">{{ proDet.description }}</h3>
+        <h4 class="h6 text-muted">{{ proDet.title }}</h4>
+        <h5 class="text-main h6">{{ proDet.category.name }}</h5>
+        <div class="d-flex align-items-center justify-content-between">
+          <span>{{ proDet.price }}EGP</span>
+          <div>
+            <i class="fas fa-star rating-color"></i>
+            <span>{{ proDet.ratingsAverage }}</span>
+          </div>
+        </div>
+        <button (click)="addProductToCart(proDet._id)" class="btn-main w-100">
+          <i *ngIf="isCartLoading" class="fas fa-spinner fa-spin"></i>
+          Add to Cart
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+<div
+  class="opacity-50 position-absolute w-100 h-100 top-0 start-0 bg-black d-flex justify-content-center align-items-center"
+  *ngIf="isLoad"
+>
+  <div aria-live="assertive" role="alert" class="loader"></div>
+</div>

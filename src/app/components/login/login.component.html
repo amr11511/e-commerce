@@ -1,0 +1,261 @@
+<section class="bg-main-light p-3 my-3 rounded w-80 mx-auto shadow">
+  <h1>Login Now</h1>
+  <form [formGroup]="loginForm" (ngSubmit)="handelLogin()">
+    <div class="mb-2">
+      <label for="email">email:</label>
+      <input
+        #emailInput
+        type="email"
+        id="email"
+        class="form-control"
+        formControlName="email"
+      />
+      <div
+        class="alert alert-danger"
+        *ngIf="
+          loginForm.get('email')?.errors &&
+          (loginForm.get('email')?.touched || emailInput.value.length > 0)
+        "
+      >
+        <p *ngIf="loginForm.get('email')?.getError('required')">
+          email is required
+        </p>
+        <p *ngIf="loginForm.get('email')?.getError('email')">
+          email is invalid
+        </p>
+      </div>
+    </div>
+    <div class="mb-2">
+      <label for="password">password:</label>
+      <input
+        #passInput
+        type="password"
+        id="password"
+        class="form-control"
+        formControlName="password"
+      />
+      <div
+        class="alert alert-danger"
+        *ngIf="
+          loginForm.get('password')?.errors &&
+          (loginForm.get('password')?.touched || passInput.value.length > 0)
+        "
+      >
+        <p *ngIf="loginForm.get('password')?.getError('required')">
+          password is required
+        </p>
+        <p *ngIf="loginForm.get('password')?.getError('pattern')">
+          must be at least 6 chars
+        </p>
+      </div>
+    </div>
+    <div class="d-flex justify-content-end">
+      <!-- Button trigger modal -->
+      <button
+        type="button"
+        class="btn text-main"
+        data-bs-toggle="modal"
+        data-bs-target="#exampleModal"
+      >
+        Forget Password?
+      </button>
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="exampleModal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">
+                Modal title
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">
+              <form
+                [formGroup]="forgetPasswordForm"
+                (ngSubmit)="handelForgetPassword()"
+                *ngIf="showForgetPassword"
+              >
+                <div>
+                  <h3 class="text-center text-main">Forget Password</h3>
+                  <label for="email">email:</label>
+                  <input
+                    #forgetEmail
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    formControlName="email"
+                  />
+                  <div
+                    class="alert alert-danger"
+                    *ngIf="
+                      forgetPasswordForm.get('email')?.errors &&
+                      (forgetPasswordForm.get('email')?.touched ||
+                        forgetEmail.value.length > 0)
+                    "
+                  >
+                    <p
+                      *ngIf="
+                        forgetPasswordForm.get('email')?.getError('required')
+                      "
+                    >
+                      email required
+                    </p>
+                    <p
+                      *ngIf="forgetPasswordForm.get('email')?.getError('email')"
+                    >
+                      email invailed
+                    </p>
+                  </div>
+                </div>
+                <button
+                  [disabled]="forgetPasswordForm.invalid"
+                  class="btn-main my-1"
+                >
+                  <i *ngIf="emailForget" class="fas fa-spinner fa-spin"></i>
+                  Submit Email
+                </button>
+                <div *ngIf="msgStateEmail" class="alert alert-danger">
+                  {{ msgStateEmail }}
+                </div>
+              </form>
+              <form
+                [formGroup]="verifyResetCode"
+                (ngSubmit)="handelResetCode()"
+                *ngIf="showVerifyResetCode"
+              >
+                <div class="my-1">
+                  <h3 class="text-center text-main">Reset Code</h3>
+                  <label for="code">code:</label>
+                  <input
+                    #resetCode
+                    type="text"
+                    name="code"
+                    class="form-control"
+                    formControlName="resetCode"
+                  />
+                  <div
+                    class="alert alert-danger"
+                    *ngIf="
+                      verifyResetCode.get('resetCode')?.errors &&
+                      (verifyResetCode.get('resetCode')?.touched ||
+                        resetCode.value.length > 0)
+                    "
+                  >
+                    <p
+                      *ngIf="
+                        verifyResetCode.get('resetCode')?.getError('required')
+                      "
+                    >
+                      code required
+                    </p>
+                  </div>
+                </div>
+                <button
+                  [disabled]="verifyResetCode.invalid"
+                  class="btn-main my-1"
+                >
+                  <i *ngIf="isResetCode" class="fas fa-spinner fa-spin"></i>
+                  Submit Code
+                </button>
+                <div *ngIf="msgStateCode" class="alert alert-danger">
+                  {{ msgStateCode }}
+                </div>
+              </form>
+              <form
+                [formGroup]="resetPassword"
+                (ngSubmit)="handelMailNewPass()"
+                *ngIf="showResetPassword"
+              >
+                <div>
+                  <h3 class="text-center text-main">Reset Password</h3>
+                  <label for="email">email:</label>
+                  <input
+                    #emailReset
+                    type="email"
+                    name="email"
+                    class="form-control"
+                    formControlName="email"
+                  />
+                  <div
+                    class="alert alert-danger"
+                    *ngIf="
+                      resetPassword.get('email')?.errors &&
+                      (resetPassword.get('email')?.touched ||
+                        emailReset.value.length > 0)
+                    "
+                  >
+                    <p *ngIf="resetPassword.get('email')?.getError('required')">
+                      email required
+                    </p>
+                    <p *ngIf="resetPassword.get('email')?.getError('email')">
+                      email invailed
+                    </p>
+                  </div>
+                  <label for="password">new password:</label>
+                  <input
+                    #passInput
+                    type="password"
+                    id="password"
+                    class="form-control"
+                    formControlName="newPassword"
+                  />
+                  <div
+                    class="alert alert-danger"
+                    *ngIf="
+                      resetPassword.get('newPassword')?.errors &&
+                      (resetPassword.get('newPassword')?.touched ||
+                        passInput.value.length > 0)
+                    "
+                  >
+                    <p
+                      *ngIf="
+                        resetPassword.get('newPassword')?.getError('required')
+                      "
+                    >
+                      Password is required
+                    </p>
+                    <p
+                      *ngIf="
+                        resetPassword.get('newPassword')?.getError('pattern')
+                      "
+                    >
+                      must be at least 6 chars
+                    </p>
+                  </div>
+                </div>
+                <button
+                  [disabled]="resetPassword.invalid"
+                  class="btn-main my-1"
+                >
+                  <i *ngIf="isNewPass" class="fas fa-spinner fa-spin"></i>
+                  Submit newPassword
+                </button>
+                <div *ngIf="msgStateNewPassword" class="alert alert-danger">
+                  {{ msgStateNewPassword }}
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="btn-main mx-1">
+        <i *ngIf="isLoading" class="fas fa-spinner fa-spin"></i>
+        Login
+      </button>
+    </div>
+    <div *ngIf="msgErorr" class="alert alert-danger">{{ msgErorr }}</div>
+  </form>
+</section>
+<!-- [disabled]="loginForm.invalid" -->
